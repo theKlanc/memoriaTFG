@@ -1,0 +1,81 @@
+Gràcies als grans avenços en computació, a principis dels anys 70 els primers ordinadors personals van començar a aparèixer a les llars.
+Encara sense Internet i amb unes especificacions molt simples comparades amb la maquinària d'avui en dia, el software capaç de córrer en aquelles màquines era bastant limitat.
+No obstant, aquestes limitacions no van impedir l'aparició dels primers videojocs i videoconsoles. 
+\paragraph{}
+Tot i tractar-se de jocs inicialment molt senzills, juntament amb l'evolució dels ordinadors on s'executaven van augmentar de complexitat de forma accelerada. Inicialment eren creats per un sol desenvolupador, programats en llenguatge ensamblador, però l'augment de complexitat va requerir llenguatges de més alt nivell, amb majors i millors abstraccions i equips de desenvolupadors més grans.
+Gran part de la feina al fer un joc era repetida respecte jocs anteriors, i per tant molts jocs van passar a reaprofitar codi de jocs anteriors. Això va portar a crear una distinció més clara entre joc i motor, per tal de poder reaprofitar tot allò que no calia fer de nou.
+
+\paragraph{}
+En el disseny i arquitectura de videojocs s'anomena motor al conjunt d'eines que faciliten la creació de videojocs.
+Aquestes eines poden ser tant executables amb interfície gràfica que permetin a un artista crear un nivell, com un conjunt de APIs que treguin càrrega de feina als desenvolupadors i ofereixin un nivell més alt d'abstracció.
+
+\section{Què és el \textit{homebrew}?}
+Des dels inicis de les videoconsoles molts grups de desenvolupadors han sentit curiositat per executar codi lliurement en aquests dispositius.
+Encara que inicialment les consoles no tinguessin cap tipus de protecció, per tal d'evitar la pirateria els fabricants han anat tancant i protegint el hardware per evitar l'execució de codi arbitrari.
+Des de tècniques bàsiques com signar el codi a executar, fins a protecció contra atacs mitjançant ASLR o pàgines de memòria no executables.
+Tot i això, sempre que els fabricants han intentat protegir el hardware, els diferents grups de `hackers' han treballat per vulnerar aquesta seguretat i executar codi no signat.
+Aquestes aplicacions o codi no signat pel fabricant és el que s'anomena \textit{homebrew}.
+
+\section{Motivació}
+Els principals motors per videojocs del mercat actualment són de codi propietari. Tot i que això pot semblar un petit detall, molts principiants es poden veure descoratjats davant els possibles costos i dificultats associats.
+Si bé és cert que gairebé tots aquests motors tenen opcions gratuïtes per a principiants, la possibilitat de poder modificar el codi lliurement i sense por a cap tipus de litigi pot fer que les opcions open-source siguin molt més atractives.
+Godot és un dels motors de codi obert amb més potencial actualment, en constant evolució i cada cop més útil. Tot i així, per tal de poder executar un joc fet en Godot en una videoconsola es requereix accés als Devkits oficials, suposant un gran cost per a desenvolupadors petits.
+És per aquests motius que he decidit crear un motor de codi lliure amb suport per a homebrew a Nintendo Switch, a part de suport per Linux i Windows.
+\paragraph{}
+El món dels videojocs sempre ha estat un tema que m'ha atret, i des de fa uns anys, el desenvolupament d'aquests m'ha semblat fascinant.
+Crec que és una opció perfecta per posar en pràctica els coneixements adquirits al llarg del grau, aplicant des de conceptes apresos a Enginyeria del Software fins a parts més creatives relacionades amb multimèdia.
+\section{Propòsit i objectius del projecte}
+L'objectiu d'aquest projecte és crear un motor multiplataforma pensat per a jocs de rol en un món basat en voxels.
+El motor gestionarà el renderitzat a partir d'una vista d'ocell, dibuixant sprites 2D i aplicant efectes de parallatge segons la profunditat per aconseguir un efecte 3D utilitzant sprites.
+Dintre del joc hi haurà suport per a distàncies a escales galàctiques, permetent una simulació a escala real d'òrbites de tot el sistema solar, així com l'òrbita d'aquest respecte al centre de la via làctea, Sagitari A*.
+Tanmateix, alhora que permetrà aquesta simulació a gran escala, també tindrà suport per a moviments mil·limètrics quan faci falta, permetent al jugador, enemics i projectils moure's amb gran precisió.
+
+\section{Estructura de la memòria}
+Aquest document s’ha organitzat en 14 capítols, que són els següents:
+\begin{enumerate}
+  \item \textbf{Introducció, què és el \textit{homebrew}?, motivació, propòsit y objectius del projecte.} En aquest capítol s’explica el perquè del desenvolupament d’aquest projecte, què és el \textit{homebrew},
+quins són els objectius proposats i com s’ha organitzant el desenvolupament
+per portar-lo a terme.
+\item \textbf{Estudi de viabilitat.} En aquest capítol s’exposen els paràmetres que
+fan possible el desenvolupament del projecte.
+\item \textbf{Metodologia.} Aquest capítol conté una explicació de la tecnologia emprada
+i el perquè de l’elecció.
+\item \textbf{Planificació.} En aquesta etapa es defineix l’estratègia emprada per
+arribar a complir els objectius plantejats.
+\item \textbf{Marc de treball y conceptes previs.} En aquest capítol es descriuen
+els aspectes relacionats amb el desenvolupament general del projecte, que
+ajudaran a entendre millor els següents capítols. També es tractaran
+les principals accions desenvolupades durant les primeres etapes de la
+realització del motor. S’inclouran els passos d’estudi i aprenentatge
+de conceptes que s’hagin utilitzat per al desenvolupament.
+\item \textbf{Requisits del sistema.} En aquest capítol es defineixen els requeriments
+del programari, els quals recullen, a grans trets, els objectius de l’aplicació
+juntament amb les funcionalitats que es volen obtenir. Aquest document
+permet entendre els elements que envolten el sistema informàtic que s’intenta
+construir.
+\item \textbf{Estudis i decisions.} Aquesta secció conté una descripció de les eines
+utilitzades, amb les seves característiques i l’ús que se’ls hi ha donat, tant
+de llibreries i motors com de programari.
+\item \textbf{Anàlisis i disseny del sistema.} Aquest apartat proporciona una comprensió
+precisa de les necessitats del sistema. Es a dir, s’encarrega de la investigació
+del problema a resoldre, però no tracta el trobar una solució. Usant
+Enginyeria del Software, en aquesta secció es tradueixen els requeriments
+esmentats en capítols anteriors a un llenguatge més formal. La part de
+disseny permet augmentar el nivell de especificació, i realitzar un esquema
+de implementació del sistema mitjançant vàries eines de programació orientades
+a objectes.
+\item \textbf{Implementació i proves.} En aquest capítol es donen a conèixer com s’ha
+construït l’aplicació, les classes i els mètodes implementats que resulten
+més significatius per la comprensió del funcionament del videojoc.
+\item \textbf{Resultats.} En aquest capítol es mostren proves d’execució de l’aplicació,
+es mostren imatges del motor i del videojoc demo, incloent interfícies, imatges de la partida,
+i tot el que es pot visualitzar del conjunt que ha sigut implementat.
+\item \textbf{Conclusions.} En aquest apartat s’exposen les conclusions extretes una
+vegada finalitzat el projecte.
+\item \textbf{Treball futur.} En aquesta secció s’exposa tot allò que es pot millorar en
+el motor, o ampliar de forma interessant.
+\item \textbf{Bibliografia.} Aquest capítol conté les referències usades pel desenvolupament
+del projecte.
+\item \textbf{Manual d’usuari i instal·lació.} Aquesta secció inclou especificacions
+del funcionament del producte.
+\end{enumerate}

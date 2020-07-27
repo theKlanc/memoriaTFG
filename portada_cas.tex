@@ -1,0 +1,60 @@
+% #######################################################
+% #Template per a PFC/TFM/TFG... by Alejandro Arangua Rovira - 2013 #
+% #######################################################
+
+% #################################################################
+% - Les imatges han d'anar en una subcarpeta relativa a aquest fitxer anomenada /img/
+% #################################################################
+
+\begin{titlepage}
+\begin{center}
+
+% Logos UdG
+\begin{minipage}{0.49\linewidth}
+\begin{flushleft}
+\includegraphics[height=1.5cm]{./img/logos/EPS}
+\end{flushleft}
+\end{minipage}
+\begin{minipage}{0.49\linewidth}
+\begin{flushright}
+%\includegraphics[height=1.5cm]{./img/logos/imae_logo} %Segon logo de la dreta en cas de necessitar-se
+\end{flushright}
+\end{minipage}
+
+\vspace{2cm}
+
+\begin{color}{grisfosc}
+\large
+Escola Politècnica Superior\\[0.2cm]
+Universitat de Girona\\[1.9cm]
+\end{color}
+
+% Títol del projecte i titulació
+{\LARGE \bfseries \titulo}\\[1.5cm]
+\textsc{\large Projecte/Treball Fi de Carrera}\\[0.4cm]
+\textcolor{grisclar}{\large\titulacion}\\[5.0cm]
+
+%IMATGE PORTADA
+\AddToShipoutPicture*{%
+\put(68,225){\includegraphics[scale=1]{/portada.png}}%
+}
+\vspace{5cm}
+
+% Autor, director y fecha
+\begin{flushleft} \large
+\emph{Document:} \doc\\[0.15cm]
+\emph{Autor:} \autor\\[0.15cm]
+\emph{Director:} \director\\[0.15cm]
+\emph{Departament:} \departament\\[0.15cm]
+\emph{Àrea:} \deparea\\[0.15cm]
+\emph{Convocatoria:} \convocatoria\\[0.15cm]
+%\today
+\end{flushleft}
+
+%\vfill
+% Bottom of the page
+%{\large \today}
+
+\end{center}
+
+\end{titlepage}

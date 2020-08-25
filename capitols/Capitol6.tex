@@ -1,5 +1,45 @@
 \section{Requisits funcionals}
+Els requisits funcionals pel motor i la demo que hem establert com a objectiu d'aquest projecte són els següents:
 \begin{itemize}
-  \item{}
+  \item Realitzar una simulació en temps real de les òrbites dels planetes i satè\lgem its i altres cossos astronòmics del sistema solar. 
+  \item Simular co\lgem isions entre entitats i nodes.
+  \item Oferir una experiència sense pantalles de càrrega dins el joc, tal que el jugador pugui atravessar la galàxia sense aturar el \textit{gameplay} en cap moment.
+  \item Permetre al jugador interactuar amb els nodes de forma directe, ja sigui destruïnt i construïnt terreny, o pilotant-los directament.
+  \item El motor ha de gestionar de manera transparent els canvis d'entitats entre nodes. Dit d'altra manera, quan una entitat sigui transportada a un node diferent, el motor ha de gestionar de forma transparent el reparentitzat de la entitat cap al nou node.
+  \item El motor ha de permetre la creació d'entitats de forma modular a partir de composició.
+  \item Nodes i entitats han de poder moure's en tres grau de llibertat, permetent translacions en els tres eixos. A més, les entitats han de poder rotar al voltant del eix Z.
+  \item El motor ha de permetre a les entitats moure's per nodes d'escala planetària sense problemes de precissió.
+  \item Els planetes i cossos astronòmics del sistema solar seran simulats a escala real, on un bloc del joc equival a 1m³, però enlloc de ser esfèrics tindran forma de cilindre.
+  \item Les entitats estaràn sotmeses a forçes de gravetat, fricció i flotabilitat.
+  \item El motor ha d'estar publicat sota una llicència de codi lliure.
 \end{itemize}
 \section{Requisits no funcionals}
+\subsection{Requisits de maquinari}
+Per fer servir el motor del projecte cal disposar d'un ordinador que compleixi els següents requisits:
+\begin{itemize}
+  \item 4 GiB de RAM
+  \item 20 GiB d'espai lliure al disc
+  \item Sistema operatiu Linux o Windows 10
+\end{itemize}
+A més a més, es recomana tenir una tarjeta gràfica dedicada, i un processador equivalent o superior a un Intel i5-6600. El motor ve preconfigurat amb projectes per a Visual Studio 2019 i Qt Creator, però també es pot compilar amb un senzill Makefile.
+\\
+Per reproduïr la demo amb un rendiment acceptable cal disposar o bé d'una Nintendo Switch amb accés a \textit{homebrew}, o un ordinador amb les següents característiques:
+\begin{itemize}
+  \item nVidia GTX 960
+  \item Intel i5-6600
+  \item 8 GiB de RAM
+  \item 20 GiB d'espai lliure al disc
+  \item Sistema operatiu Linux
+\end{itemize}
+Tot i que la demo també pot ser executada sota Windows 10, el rendiment és substancialment inferior i, per tant, requereix millors especificacions per assolir el mateix rendiment que sota Linux.
+\subsection{Requisits de programari}
+La demo del projecte conté tot el necessari per ser executada, i només cal encendre el binari.
+Per poder compilar el motor sota un entorn Linux cal tenir instalat el següent \textit{software}:
+\begin{itemize}
+  \item SDL2
+  \item GNU GCC i G++
+  \item GNU Coreutils
+  \item GNU Make
+\end{itemize}
+A més, per compilar per a Nintendo Switch caldrà instalar el \textit{toolchain} devkitPro devkitA64 junt amb libnx.
+

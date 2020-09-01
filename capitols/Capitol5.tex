@@ -1,24 +1,41 @@
 \section{Conceptes}
 \subsection{Motor de videojocs}
-Un motor de videojocs és un conjunt d'eines i entorns de desenvolupament que faciliten la creació d'un videojoc. La definició és bastant oberta, ja que podem considerar com a motor des de un conjunt de llibreries independents, com és el cas amb Amethyst, fins a motors amb entorns gràfics d'alta complexitat com Unreal o Unity.
+Un motor de videojocs és un conjunt d'eines i entorns de desenvolupament que faciliten la creació d'un videojoc. La definició és bastant oberta, ja que podem considerar com a motor des de un conjunt de llibreries independents, com és el cas d'Amethyst, fins a motors amb entorns gràfics d'alta complexitat, com Unreal o Unity.
 
 \subsection{Vòxels}
-Podem definir un vòxel com la extensió al espai 3D d'un píxel. Dit d'altra manera, un vòxel és una sola casella dins d'una malla tridimensional. Si bé ja es feien servir freqüentment en anàlisi de dades mèdiques i científiques, en l'última dècada s'ha popularitzat el seu ús en videojocs, principalment gràcies a Minecraft.
+Podem definir un vòxel com una casella dins d'una malla tridimensional. Seria l'extensió del concepte de píxel si afegissim una nova dimensió a la malla. Podem definir un vòxel com la extensió a l'espai 3D d'un píxel. Dit d'altra manera, un vòxel és una sola casella dins d'una malla tridimensional. Si bé ja es feien servir freqüentment en anàlisi de dades mèdiques i científiques, en l'última dècada s'ha popularitzat l'ús en videojocs, principalment gràcies a Minecraft.
 \\
-En comparació a mètodes més tradicionals per representar terreny, els vòxels faciliten la subdivisió del espai en trossos més petits, així com la manipulació i edició del terreny en temps real. A més, la simplicitat de la seva representació facilita molt el procés de carregar i desar conjunts de vòxels al emmagatzematge.
+En comparació a mètodes més tradicionals per representar terreny, els vòxels faciliten la subdivisió de l'espai en trossos més petits, així com la manipulació i edició del terreny en temps real. A més, la simplicitat de la representació facilita molt el procés de carregar i desar conjunts de vòxels al emmagatzematge.
+\\
+En la figura~\ref{pixelvoxel} podem observar les similaritats entre vòxels i píxels. En la figura a) observem un cercle representat per píxels, i en la figura b) observem la representació d'una esfera formada per vòxels.
+
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.5]{pixelvoxel}
+  \label{pixelvoxel}
+  \caption{Representació gràfica de píxels i vòxels.}
+\end{figure}
 \subsection{Renderització}
 S'anomena renderització al procés de convertir dades a imatges a través d'un programa informàtic. És un terme molt general, que pot descriure el procés de crear un video a través de software d'edició de video, o la representació en temps real d'un videojoc gràfic.
 \subsection{Astrodinàmica}
-L'atrodinàmica és el camp de la física que estudia el moviment dels cossos celestes no propulsats. Ja que el nostre objectiu és fer un videojoc en temps real, el que farem per simular les òrbites entre diversos cossos celestials serà integrar a partir de les següents fòrmules:
+L'astrodinàmica és el camp de la física que estudia el moviment dels cossos celestes no propulsats. Ja que el nostre objectiu és fer un videojoc en temps real, el que farem per simular les òrbites entre diversos cossos celestials serà integrar les trajectòries a partir de les següents fòrmules:
 \begin{itemize}
   \item L'equació de gravitació universal de Newton, de forma $F=G\frac{m_{1}m_{2}}{r²}$ on $F$ és la força resultant, $G$ és la constant de gravitació universal, $m_{1}$ i $m_{2}$ són les masses dels dos cossos, i $r$ és la distància entre ells
   \item La segona llei de Newton, $F=ma$, on $F$ és la força, $m$ és la massa del cos, i $a$ és l'acceleració del cos.
 \end{itemize}
+Per la integració farem servir el mètode d'Euler, que és un mètode d'integració numèrica pertanyent a la familia de mètodes de Runge-Kutta.
+El mètode consisteix en aproximar punts de la corva a partir de l'equació diferencial i un valor inicial. Tindrem un tamany de passa fix, a partir del qual avançarem en l'equació assumint que la recta tangent a la corva en el punt actual aproxima prou correctament la corva real. Havent obtingut la recta tangent a partir del pendent al punt conegut, avançarem en aquesta recta segons el tamany de passa, i obtindrem el nou punt de l'aproximació. L'error d'aquest mètode és proporcional al quadrat del tamany de passa, així que haurem de triar el tamany de passa amb cura per mantenir l'error sota control.
 
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.25]{eulermethod}
+  \caption{Representació del mètode d'Euler. En blau tenim la corva real, i en vermell tenim l'aproximació a partir dels punts obtinguts.}
+\end{figure}
 \subsection{Entity Component System}
-Entity component system és un patró de disseny de software utilitzat en el desenvolupament de videojocs. El patró especifica un sistema on tots els objectes del joc son una `entitat'. Fent ús de composició, les entitats no són més que agrupacions de diversos components, i cada component és actualitzat de forma independent per el sistema del mateix tipus.
+Entity component system és un patró de disseny de software utilitzat en el desenvolupament de videojocs. El patró especifica un sistema on tots els objectes del joc son una `entitat'. Fent ús de composició, les entitats no són més que agrupacions de diversos components, i cada component és actualitzat de forma independent pel sistema.
 \\
-Per exemple, podem imaginar el component Cos. Tota entitat que tingui un cos físic i hagi de poder co\lgem isionar amb altres entitats i nodes tindrà un component Cos, el qual serà tant sols una estructura que emmagatzemarà les propietats del cos.
+Per exemple, podem imaginar el component Cos. Tota entitat que tingui un cos físic i hagi de poder co\lgem isionar amb altres entitats i nodes tindrà un component Cos, el qual serà una estructura que emmagatzemarà les propietats del cos.
 Per altra banda tindrem el sistema corresponent als cossos, el qual a cada actualització s'encarregarà de detectar i solucionar les possibles co\lgem isions entre cossos.
 \\
 Aquest patró facilita la modularitat de les entitats, i ajuda en gran mesura a crear i manipular entitats de forma dinàmica, on un objecte qualsevol podria obtenir la habilitat de, per exemple, volar, tant sols afegint-li el component corresponent.
@@ -26,8 +43,9 @@ Aquest patró facilita la modularitat de les entitats, i ajuda en gran mesura a 
 \subsection{Gradient de soroll}
 Un gradient de soroll és una funció matemàtica que genera valors numèrics pseudo-aleatòris dins d'un cert rang a partir d'unes coordenades d'entrada. Aquest soroll no és directament pseudo-aleatòri com podria ser-ho el soroll blanc, sinó que és generat mitjançant interpolació entre valors pseudo-aleatòris.
 Aquesta interpolació fa que els valors del soroll en una certa àrea estiguin interrelacionats, i resulta en un soroll suau i poc abrupte.
-En la figura ~\ref{fignoisecomparison} podem veure la diferència entre aquests tipus de soroll.
+En la figura~\ref{fignoisecomparison} podem veure la diferència entre aquests dos tipus de soroll.
 \begin{figure}[h]
+  \centering
   \hfill
   \subfigure[Exemple de soroll blanc]{\includegraphics{whitenoise}}
   \hfill
@@ -38,8 +56,8 @@ En la figura ~\ref{fignoisecomparison} podem veure la diferència entre aquests 
 \end{figure}
 
 \section{Termes}
-A part dels conceptes explicats en aquest anterior apartat, en aquesta memòria farem servir alguns termes que s'expliquen a continuació.
+A part dels conceptes explicats en l'apartat anterior, en aquesta memòria farem servir alguns termes que s'expliquen a continuació.
 \begin{itemize}
-  \item{Node: }Anomenarem nodes als cossos astronòmics de la nostra simulació. Això engloba des del forat negre del centre de la via làctea amb un radi de $22\cdot10^{9}m$, fins a una petita nau espacial que el jugador ha construït dins del joc, amb unes dimensions de tant sols 10m³.
-  \item{Entitat: }Anomenarem entitats a tots els personatges i objectes que interactuen amb el món. Exemples d'entitats podrien ser el pròpi jugador, un enemic, una pilota, o la càmera del joc.
+  \item{Node: }Anomenarem nodes als cossos astronòmics de la simulació. Això engloba des del forat negre del centre de la via làctea amb un radi de $22\cdot10^{9}m$, fins a una petita nau espacial que el jugador hagi construït dins del joc, amb unes dimensions de tant sols 10m³.
+  \item{Entitat: }Anomenarem entitats a tots els personatges i objectes que interactuen amb el món. Exemples d'entitats podrien ser el propi jugador, un enemic, una pilota, o la càmera del joc.
 \end{itemize}

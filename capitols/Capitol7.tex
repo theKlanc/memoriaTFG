@@ -9,7 +9,7 @@ Amb l'objectiu d'oferir un motor accessible a més desenvolupadors, Unity va ser
 Unity és de codi propietari tot i tenir alguna part publicada amb llicència de només referència, i ofereix subscripcions de pagament així com una versió gratuïta per a petits desenvolupadors.
 \\
 El motor està construït al voltant d'un editor gràfic 3D, el qual exposa gran part de la funcionalitat de manera visual, evitant la necessitat de modificar codi directament.
-Es pot programar tant en C++ i C#, com amb el llenguatge de scripting visual Bolt.
+El llenguatge de programació que suporta actualment és \texttt{C\#}.
 \\
 Unity ofereix suport multiplataforma per a totes les plataformes de videojocs modernes. Estàn incloses Windows, Linux, Mac OS, Android, iOS, Nintendo Switch i Xbox One.
 \\
@@ -36,7 +36,7 @@ La llista de jocs famosos creats en Unity està continuament en expansió, a con
 Unreal Engine és un motor de videojocs desenvolupat per Epic Games. Desenvolupat inicialment per Tim Sweeney l'any 1995 com a motor pel joc Unreal, l'Unreal Engine ha passat a ser un dels motors més utilitzats per a jocs AAA.
 El motor disposa d'una interfície gràfica des d'on es desenvolupen els jocs, i permet als desenvolupadors utilitzar codi C++, o fer servir el seu propi llenguatge de scripting visual anomenat Blueprint.
 \\
-Unreal Engine ofereix tant una modalitat gratuïta per a petits desenvolupadors, com modalitats de pagament amb les que donen accés al codi font.
+Unreal Engine ofereix tant una modalitat gratuïta per a petits desenvolupadors, com modalitats de pagament per a estudis més grans.
 La llista de jocs AAA que utilitzen Unreal Engine és immensa, però aquí llistem alguns dels més importants:
 \begin{itemize}
   \item Rocket League
@@ -56,17 +56,32 @@ Com Unity, Unreal Engine ofereix suport multiplataforma per a Windows, Mac, Linu
 \begin{center}
   \includegraphics[scale=0.2]{godotlogo}
 \end{center}
-Godot és motor de videojocs originalment creat per Juan Linietsky i Ariel Manzur. Tot i ser comparativament molt més petit que Unity i Unreal, recentment està rebent grans actualitzacions que el poden apropar al nivell dels altres 2.
+Godot és motor de videojocs originalment creat per Juan Linietsky i Ariel Manzur. Tot i ser comparativament molt més petit que Unity i Unreal, recentment està rebent grans actualitzacions que el poden apropar al nivell dels altres dos.
 A diferència d'Unity i Unreal, Godot és distribuït sota la llicència de codi lliure MIT, i és publicat en un repositori de Github.
 Ofereix una interfície gràfica per editar projectes, i tot i estar inicialment orientat a videojocs 2D, suporta també projectes en 3D, amb la major concentració del desenvolupament recent centrant-se en aquesta part.
-Pot ser programat a través d'un editor de scripts visual, C#, el seu propi llenguatge anomenat GDScript, o a través de GDNative, que és una interfície que permet interactuar amb llenguatges compilats tot i que només C++ està suportat de manera oficial.
+Pot ser programat a través d'un editor de scripts visual, C\#, el seu propi llenguatge anomenat GDScript, o a través de GDNative, que és una interfície que permet interactuar amb llenguatges compilats tot i que només C++ està suportat de manera oficial.
 Oficialment suporta compilacions per a Windows, Mac OS, Linux, Android, iOS i web a través de emscripten. Tot i que oficialment no suporta cap consola, hi ha tercers que ofereixen suport per a Nintendo Switch, PS4 i Xbox One sempre que es disposi del SDK oficial.
 \subsection{Decisió}
-Degut a que cap dels motors de videojocs principals actuals compleix els principals objectius del nostre projecte, creiem que el nostre motor pot ocupar un espai que actualment no està cobert en el sector.
+A cause a que cap dels motors de videojocs principals actuals compleix els principals objectius del nostre projecte, creiem que el nostre motor pot ocupar un espai que actualment no està cobert en el sector.
 \section{Llenguatges}
-\subsection{C}
 \subsection{C++}
+\begin{center}
+  \includegraphics[scale=0.1]{c++logo}
+\end{center}
+Originalment dissenyat com una extensió al llenguatge C, anomenada C amb classes, C++ ha esdevingut un dels llenguatges de programació principals en l'actualitat. Va ser dissenyat i creat per Bjarne Stroustrup, qui el va publicar al 1985 com si d'un preprocessador es tractés, el qual convertia el codi orientat a objectes de C++ en C clàssic. Al llarg dels anys, C++ s'ha convertit en un llenguatge genèric, funcional i orientat a objectes modern.
+\\
+A part de ser un llenguatge de programació de propòsit general molt apte, C++ ha passat a ser el llenguatge de programació per defecte en l'indústria dels videojocs. Gràcies a la capacitat per barrejar codi a alt nivell amb codi a molt baix nivell i a la naturalesa com a llenguatge compilat, permet als programadors treballar a un alt nivell d'abstracció però sempre tinguent sota control el rendiment.
+
+
 \subsection{Rust}
+\begin{center}
+  \includegraphics[scale=0.1]{rustlogo}
+\end{center}
+Rust és un llenguatge de programació dissenyat per Graydon Hoare a Mozilla, en part amb l'objectiu de presentar una alternativa amb millor gestió de memòria i seguretat respecte C++. A diferència de C++, el fet de no haver de ser compatible amb C suposa una gran llibertat per fer canvis estructurals que a C++ no serien possibles. 
+
+\subsection{Decisió}
+Tot i que conceptualment Rust sembla una molt bona opció, la falta de maduresa del ecosistema el fa una pitjor elecció per al nostre objectiu. Si bé hi ha \textit{toolchain} per compilar per Nintendo Switch, aquest és molt menys madur que el de C++, i la falta de llibreries orientades a motors de videojocs obligarien a acabar utilitzant llibreries de C++ a través de modes de compatibilitat binària, parcialment perdent les avantatges que Rust aportaria.
+És per això que es va decidir realitzar el projecte en el llenguatge C++, utilitzant l'últim estàndard disponible, C++17.
 \section{Llibreries}
 \subsection{Multimèdia}
 \subsubsection{SDL2}
@@ -81,7 +96,7 @@ Tot i que la API és per a C, és perfectament utilitzable des de C++. Es distru
 \end{center}
 Simple and Fast Multimedia Library és una altre capa d'abstracció de hardware multiplataforma similar a SDL. Es diferencia respecte SDL en ser lleguerament més orientada a C++. També és publicada sota llicència Zlib, però actualment no existeix suport per a Nintendo Switch.
 \subsubsection{Decisió}
-Degut a la falta de suport per a Nintendo Swich de SFML, hem decidit triar SDL2 com a capa multimèdia pel projecte. Com que nosaltres també afegirem una capa d'abstracció de hardware pròpia al projecte, podríem haver escollit SFML per la versió de PC i SDL2 per a Nintendo Switch, però hagués suposat un esforç extra que no hauria aportat cap benefici al projecte.
+A causa de la falta de suport per a Nintendo Swich de SFML, hem decidit triar SDL2 com a capa multimèdia pel projecte. Com que nosaltres també afegirem una capa d'abstracció de hardware pròpia al projecte, podríem haver escollit SFML per la versió de PC i SDL2 per a Nintendo Switch, però hagués suposat un esforç extra que no hauria aportat cap benefici al projecte.
 
 \subsection{FastNoise}
 FastNoise és una llibreria de generació de gradients de soroll per C++. Permet de forma senzilla generar sorolls Value, Perlin, Simplex, Celular i Blanc tant en formats 2D com 3D. També permet soroll Simplex en 4D, i habilita la combinació de diferents nivells de soroll amb moviment fraccional Brownià.
@@ -91,7 +106,7 @@ FastNoise és una llibreria de generació de gradients de soroll per C++. Permet
 \end{center}
 EnTT és un framework de gestió de Entity Component System per C++. Està publicat sota la llicència MIT, i està en actiu desenvolupament a Github. A part del ECS també inclou diverses altres eines, però nosaltres farem ús exclusiu del ECS. Entre d'altres, és utilitzat per la versió Bedrock de Minecraft.
 \subsection{ReactPhysics3D}
-ReactPhysics3D és un motor de física per a simulacions i jocs en C++. Està en actiu desenvolupament a Github, i és publicat sota la llicència MIT. Tot i que RP3D ofereix la possibilitat de fer tots els càlculs de física de forma autònoma, nosaltres només l'utilitzarem per a detecció de co\lgem isions i farem la resta de càlculs nosaltres degut a la naturalesa del nostre motor.
+ReactPhysics3D és un motor de física per a simulacions i jocs en C++. Està en actiu desenvolupament a Github, i és publicat sota la llicència MIT. Tot i que RP3D ofereix la possibilitat de fer tots els càlculs de física de forma autònoma, nosaltres només l'utilitzarem per a detecció de co\lgem isions i nosaltres farem la resta de càlculs degut a la naturalesa del motor.
 \subsection{nlohmann/json}
 JSON for Modern C++, conegut popularment per la seva adreça de Github com a nlohmann/json és una lleugera llibreria que facilita la manipulació d'arxius JSON des de C++. Està en actiu desenvolupament i es troba publicat sota la llicència MIT.
 \subsection{IceCream-Cpp}
@@ -101,7 +116,7 @@ IceCream-Cpp és una molt petita llibreria que assisteix a l'hora de fer debuggi
   \includegraphics[scale=0.5]{devkitprologo}
 \end{center}
 DevkitA64 és un \textit{toolchain} publicat per l'equip de DevkitPro que permet, junt a libnx, compilar projectes C++ per a la Nintendo Switch. Es troba sota la llicència ISC, que és funcionalment equivalent a BSD 2C i MIT.
-\subsection{Qt Creator}
+%\subsection{Qt Creator}
 
-\subsection{Visual Studio}
+%\subsection{Visual Studio}
 

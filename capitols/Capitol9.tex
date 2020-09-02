@@ -1,0 +1,96 @@
+A continuació s'expliquen diverses implementacions interessants, o bugs curiosos i la seva subseqüent solució.
+\section{Observer}
+La implementació del observador és una de les parts que es va fer més tard, i és una implementació on es demostra part de la potència de C++, i en concret, C++20 / Modern C++.
+\\
+\begin{lstlisting}[language=C++]
+using eventArgs = std::variant<
+	std::tuple<entt::entity, entt::entity, double>,
+	std::tuple<universeNode*, entt::entity, double>,
+	std::tuple<universeNode*, universeNode*, double>,
+	entt::entity
+>;
+\end{lstlisting}
+Primer de tot aquí creem un tipus de dades anomenat eventArgs, el qual representarà els arguments que un esdeveniment pot enviar als subscriptors.
+Std::variant a vegades anomenat "sum type" podriem descriure'l com l'equivalent a un \textit{union} amb \textit{type safety}. 
+Així doncs, una variable del tipus eventArgs podrà contenir una std::tuple d'algun dels tipus especificats, o un entt::entity.
+\\
+\begin{lstlisting}[language=C++]
+enum class eventType{
+	COLLISION_EE,
+	COLLISION_NE,
+	COLLISION_NN,
+	PROJECTILEHIT,
+	PROJECTILEBOUNCE,
+	_SIZE,
+};
+\end{lstlisting}
+Tot seguit definim el enum class eventType, que especificara els diversos tipus d'esdeveniments que el nostre observador pot gestionar.
+\\
+\begin{lstlisting}[language=C++]
+namespace {
+	consteval std::array<size_t,(unsigned)eventType::_SIZE> _observertypetable(std::array<std::pair<eventType,eventArgs>,(unsigned)eventType::_SIZE> args){
+		std::array<size_t,(unsigned)eventType::_SIZE> result;
+		for(auto& val : args){
+			result[(unsigned)val.first] = val.second.index();
+		}
+		return result;
+	}
+}
+\end{lstlisting}
+A continuació tenim una funció \textit{consteval} dins un espai de noms anònim, que evita que la funció sigui accessible fora d'aquest arxiu.
+L'especificador \textit{consteval} avisa al compilador que la funció no té efectes secundaris, i pot ser avaluada en temps de compilació en cas de ser necessari.
+La funció en sí retorna un array amb tamany igual al nombre de tipus d'esdeveniments diferents que tenim a eventType, i a cada posició conté una variable size\_t. 
+Pren per argument un array que conté parelles de eventType i eventArgs, els quals relacionarà per retornar l'array resultant.
+\\
+Per crear aquest resultat primer de tot l'inicialitza.
+Després itera per cada parella de eventType i eventArgs.
+Al array resultant coloca a la posició indexada pel valor del eventType un valor de tipus size\_t, aquest valor l'obté de cridar index() al variant, que serveix com a una pseudo-reflexió i retorna l'índex del tipus dins del variant.
+Un cop ha iterat per totes les parelles retorna l'array que ha construït.
+
+\\
+\begin{lstlisting}[language=C++]
+constexpr std::array<size_t,(unsigned)eventType::_SIZE> _eventLUT = _observertypetable(std::array<std::pair<eventType,eventArgs>,(unsigned)eventType::_SIZE>{
+	std::make_pair(eventType::COLLISION_EE,std::tuple<entt::entity,entt::entity, double>()),
+	std::make_pair(eventType::COLLISION_NE,std::tuple<universeNode*,entt::entity, double>()),
+	std::make_pair(eventType::COLLISION_NN,std::tuple<universeNode*,universeNode*, double>()),
+	std::make_pair(eventType::PROJECTILEHIT,std::tuple<entt::entity,entt::entity, double>()),
+	std::make_pair(eventType::PROJECTILEBOUNCE,entt::entity())
+});
+\end{lstlisting}
+Tot seguit creem una LUT que consisteix en l'array obtingut al cridar la anterior funció. La funció la cridem amb un std::array que creem \textit{in-place} que conté parelles de eventType i eventArgs.
+\\
+\begin{lstlisting}[language=C++]
+class observer {
+public:
+  static void registerSubscriber(eventType t, std::function<void(eventArgs args)> f, void* owner){
+    if(!_subscribers[(unsigned)t].contains(owner))
+		  _subscribers[(unsigned)t].emplace(owner,f);
+  }
+  static void deleteSubscriber(eventType t, void* owner){
+    if(_subscribers[(unsigned)t].contains(owner))
+      _subscribers[(unsigned)t].erase(owner);
+  }
+
+
+	template <eventType E,typename T>
+	static void sendEvent(T args)
+	{
+		static_assert(eventArgs(T()).index()==_eventLUT[(unsigned)E]);
+		for(auto& sub : _subscribers[(unsigned)E]){
+			sub.second(eventArgs(args));
+		}
+	}
+
+private:
+	static std::array<std::unordered_map<void*,std::function<void(eventArgs args)>>,(unsigned)eventType::_SIZE> _subscribers;
+};
+\end{lstlisting}
+Finalment tenim el observer en sí. Les funcions registerSubscriber i deleteSubscriber simplement afegeixen un subscriptor al observador o l'esborren.
+Tenim un std::array que per cada tipus de esdeveniment conté un std::map que relaciona subscriptors amb funcions a cridar. El void* és un handle que l'objecte que s'ha subscrit ha donat al subscriure's, podria interpretar-se com un "reverse handle".
+\\
+La funció interessant és sendEvent. És una funció genèrica depenent del tipus T i el tipus d'esdeveniment E. Primer de tot es fa una asserció estàtica utilitzant la \textit{lookup table} que abans hem emplenat. Aquesta asserció comprova en temps de compilació que l'esdeveniment que s'envia s'adigui a les dades que s'envien junt amb ell.
+En temps d'execució el que es farà serà iterar per tots els subscriptors d'aquell tipus d'esdeveniment, i es cridarà la funció associada a cada subscriptor.
+\\
+D'aquesta manera tenim una implementació d'un observador amb poc codi innecessari, senzilla i amb comprovació de tipus en temps de compilació.
+\section{universeNode::getLocalPos}
+\section{}

@@ -1,0 +1,22 @@
+Com s'ha esmentat a la conclusió, el motor encara té camí per recórrer si es vol desenvolupar un videojoc comercial fent-lo servir.
+\\
+A continuació es fa un recull de punts a desenvolupar en el futur:
+\section{Refactorització i neteja de codi}
+Actualment creiem que el motor està ben dissenyat, però hi ha una certa quantitat de deute tècnic acumulat que ha de ser adreçat si es vol continuar el desenvolupament del projecte.
+Alguns dels punts a netejar són els següents:
+\begin{itemize}
+  \item Separar algunes de les responsabilitats de universeNode en altres classes més petites.
+  \item Separar la renderització del State\_Playing en una classe separada.
+  \item Reimplementar els blocs interactuables com a entitats lligades a un registre específic a cada node.
+  \item Desacoblar algunes de les classes, fent servir el Observer com a mitjà de comunicació.
+\end{itemize}
+
+\section{Optimitzacions}
+Tot i que el rendiment és normalment molt jugable, en certes ocasions la taxa de quadres per segon pot baixar a un sol dígit.
+Optimitzacions en el càlcul de col·lisions podria ajudar molt a evitar aquestes caigudes, ja que sembla ser la part que més càrrega dóna a la CPU.
+\section{Renderització}
+Per aconseguir un gran salt de rendiment i evitar molts dels maldecaps que la renderització en 2D d'un món 3D ens porta, passar el procés de renderitzat a 3D fent servir la GPU donaria molta més flexibilitat al motor.
+Tot i passar a 3D, la idea seria seguir amb la mateixa càmera en vista d'ocell per mantenir el mateix estil visual.
+\section{Rotacions}
+Tot i que les entitats poden rotar sobre sí mateixes, actualment els nodes no tenen aquesta habilitat. Encara que aquesta limitació dóna lloc a opcions de gameplay bastant interessants, podria ser una gran opció almenys explorar la possibilitat d'afegir rotacions al voltant del eix Z als nodes.
+En cas de haver canviat a renderització 3D també, podríem inclús implementar rotacions al voltant de tots els eixos, oferint sis graus de llibertat tant a nodes com a entitats. Aquest canvi però requeriria d'una gran reestructuració del motor, i no entra en els plans immediats de futur.

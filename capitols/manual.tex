@@ -1,0 +1,45 @@
+\section{Instalació de la demo a PC}
+Per la instalació de la demo a PC cal seguir les següents passes:
+\begin{enumerate}
+  \item Descarregar els binaris adeqüats per la nostre plataforma a través de la secció Releases de Github.
+  \item A Linux, cal també insta\lgem ar SDL2 des del nostre gestor de paquets. A windows les llibreries necessàries estàn distribuïdes junt amb els binaris.
+  \item Descomprimir el zip a una carpeta qualsevol.
+  \item Executar el binari.
+\end{enumerate}
+\section{Instalació de la demo a Nintendo Switch}
+Assumint que la Nintendo Switch ja disposa de \textit{homebrew launcher}, només cal descomprimir la carpeta Z5 del zip distribuït a través de Github a dins la carpeta /switch de la tarjeta microSD\@.
+Un cop fet això podrem executar la demo accedint al \textit{homebrew launcher} i prement sobre la icona del Z5.
+\section{Instruccions per la demo}
+Des del menú principal tenim accés a les partides guardades, la opció de crear una nova partida i el menú del editor de prefabs.
+Dins el \textit{gameplay} de la demo es poden realitzar les següents accions:
+\begin{itemize}
+  \item Podem controlar el personatge amb les tecles WASD.
+  \item Podem saltar si estem en contacte amb el terra utilitzant la tecla d'espai.
+  \item Podem interactuar amb objectes ressaltats utilitzant la tecla intro.
+  \item En cas d'estar interactuant amb els controls d'una nau, podem dirigir-la amb WASD, RF i X. També podem sortir dels controls utilitzant la tecla retrocés.
+  \item En cas d'estar al aire podem maniobrar lleugerament utilitzant WASD, i podem controlar la nostra altitud amb R i F.
+  \item Si el mode Debug està activat, podem obrir una consola de \textit{debugging} amb la tecla de sobre el tabulador (º), i es pot interactuar com amb una consola normal. La comanda `help' llistarà totes les comandes disponibles.
+  \item Podem obrir i tancar el mapa estalar amb la tecla M.
+  \item Podem canviar l'objecte equipat fent servir la rodeta del ratolí.
+  \item Amb el clic esquerre del ratolí accionarem l'objecte que tinguem a la mà. Això ens permetrà excavar el terreny amb l'eina per defecte.
+\end{itemize}
+\section{Instruccions d'ús del editor de prefabs}
+Un cop dins l'editor podem prémer la tecla H per veure les accións que fa cada tecla.
+Els controls bàsics són:
+\begin{itemize}
+  \item WASDRF per moure la càmera.
+  \item Clic esquerre per colocar el bloc seleccionat a sota la posició del cursor.
+  \item Clic dret per esborrar el bloc de sota el cursor.
+  \item Rodeta del ratolí o fletxes esquerra i dreta per seleccionar un altre bloc de la barra.
+  \item Fletxes amunt i avall per canviar el bloc de la posició actual de la barra.
+  \item Esc per sortir i guardar, Shift+Esc per sortir sense guardar els canvis.
+\end{itemize}
+\section{Insta\lgem ació del motor}
+Per crear un videojoc fent servir el nostre motor seguirem les següents passes. S'assumeix que es fa el desenvolupament en una màquina Linux.
+\begin{enumerate}
+  \item Insta\lgem ar les llibreries SDL2 a través del nostre gestor de paquets.
+  \item Clonar recursivament el repositori fent servir la comanda `git clone --recursive https://github.com/theKlanc/Z5'
+  \item Podem obrir el projecte amb Qt Creator seleccionant la carpeta del repositori des de la interfície. També podem treballar manualment amb un editor de text.
+  \item Un cop fetes les modificacions necessàries al motor i joc, podem compilar el projecte amb la comanda `make -f linux.mk'
+  \item En cas de voler compilar per Nintendo Switch haurem d'insta\lgem ar les llibreries de desenvolupament de \textit{homebrew}. Per compilar per a Switch farem servir la comanda `make -f switch.mk'
+\end{enumerate}

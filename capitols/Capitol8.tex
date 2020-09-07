@@ -1,43 +1,55 @@
 En aquest capítol explicarem el disseny del projecte. 
 S'ha dividit en dues parts per facilitar l'organització. 
-La primera part explica la interfície, el sistema d'estats del motor, i el editor de prefabs. 
-La segona explica l'estat de joc on el jugador té control del personatge. 
-També hi ha una secció addicional per explicar el funcionament de les llibreries utilitzades, així com altres eines petites que poden ser difícils d'ubicar en cap de les dues parts principals.
+La primera part explica la interfície, el sistema d'estats del motor, i l'editor de prefabs. 
+La segona explica l'estat del joc on el jugador té control del personatge, també anomenat \textit{gameplay}. 
+Hi ha una secció addicional per explicar el funcionament de les llibreries utilitzades, així com altres eines petites que poden ser difícils d'ubicar en cap de les dues parts principals.
 A la figura~\ref{dc_general} es mostren la majoria de classes del projecte, i les principals relacions entre elles.
-\begin{figure}[!h]
-  \includegraphics[angle=90,origin=c,width=\textwidth,height=\textheight,keepaspectratio]{ms4}
+\pagebreak
+\begin{figure}[H]
+  \centering
+  \includegraphics[angle=90,origin=c,scale=0.25]{ms4}
   \caption{Diagrama de classes general}
   \label{dc_general}
 \end{figure}
 \section{Interfície i menús}
-\begin{figure}[!h]
-  \includegraphics[angle=90,origin=c,width=\textwidth,height=\textheight,keepaspectratio]{ms1}
-  \caption{Diagrama de classes de l'interfíce i menús}
-  \label{dc_menu}
-\end{figure}
-En aquesta part es detallen les classes i el funcionament de la part menys relacionada amb el joc en sí. La separació és complicada de definir, però aqui s'explica el funcionament del bucle principal, els menús, el sistema d'estats i l'editor de "prefabs". 
-La funció main del nostre motor tant sols crea una instància d'un objecte gameCore, i acte següit crida la funció gameCore.gameLoop(), així que podríem considerar gameCore.gameLoop() com la nostre funció principal.
+%\begin{landscape}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[angle=90,origin=c,scale=0.25]{ms1}
+    \caption{Diagrama de classes de l'interfíce i menús}
+    \label{dc_menu}
+  \end{figure}
+%\end{landscape}
+En aquesta part es detallen les classes i el funcionament de la part menys relacionada amb el joc en sí. La separació és complicada de definir, però aqui s'explica el funcionament del bucle principal, els menús, el sistema d'estats i l'editor de `prefabs'. 
+La funció `main' del nostre motor tant sols crea una instància d'un objecte gameCore, i acte següit crida la funció gameCore.gameLoop(), així que podríem considerar gameCore.gameLoop() com la nostre funció principal.
 \subsection{gameCore}
 %[[TODO-CLASSDIAG]]
 La classe gameCore és l'encarregada de gestionar els diferents estats del motor. 
-Simplement conté una pila d'estats, i la seva funció que fà de bucle principal s'encarrega de cridar les funcions de input, càlcul i dibuix del estat que estigui al cim de la pila.
+Simplement conté una pila d'estats, i la conté una funció que fa de bucle principal, la qual s'encarrega de cridar les funcions de \textit{input}, càlcul i dibuix del estat que estigui al cim de la pila.
 Els pròpis estats podràn, aleshores, cridar funcions de gameCore per treure o afegir estats a la pila.
 
 \subsection{States}
-Els estats, o més concretament, State\_Base, és una classe abstracte que representa una escena o estat del motor. Conté mètodes per rebre input, actualitzar l'estat i dibuixar l'estat.
-Exemples d'estats possibles podrien ser l'estat del menú principal, un estat per modificar les opcions del joc, l'estat de gameplay en sí, o un estat de pausa dins del gameplay.
-A part dels estats que explicarem a continuació hi ha l'estat del joc (State\_Playing) que serà explicat al apartat de simulació del joc.
+Els estats, o més concretament, State\_Base, és una classe abstracte que representa una escena o estat del motor. Conté mètodes per rebre \textit{input}, actualitzar l'estat i dibuixar-lo.
+Exemples d'estats possibles podrien ser l'estat del menú principal, un estat per modificar les opcions del joc, l'estat de \textit{gameplay} en sí, o un estat de pausa dins del \textit{gameplay}.
+A part dels estats que explicarem a continuació, hi ha l'estat del joc (State\_Playing) que serà explicat al apartat de simulació del joc.
 
 \subsubsection{Main Menu}
-%[[TODO-IMATGE]]
 Main\_Menu és l'estat que representa el menú principal. Conté molt poca lògica, ja que simplement és interfície gràfica per entrar a altres estats del motor.
-
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.25]{menu}
+  \caption{Captura de pantalla del menú principal.}
+\end{figure}
 \subsubsection{Prefab Editor}
-%[[TODO-IMATGES]]
-Prefab\_Editor és l'estat per l'editor de prefabs del motor. Té un funcionament similar a una èina de dibuix informàtica, on l'usuari pot omplir una graella de diferents colors, en aquest cas blocs, arrastrant el cursor per la pantalla.
-Disposa d'eines de pinzell, esborrador, cub de pintura i selectors. També incorpora funcionalitats per copiar, tallar, enganxar, desfer i refer canvis.
+Prefab\_Editor és l'estat del editor de prefabs del motor. Té un funcionament similar a una èina de dibuix informàtica, on l'usuari pot omplir una graella de píxels amb diferents colors, en aquest cas blocs, arrossegant el cursor per la pantalla.
+Disposa d'eines de pinzell, esborrador, cub de pintura i seleccions. També incorpora funcionalitat per copiar, retallar, enganxar, desfer i refer canvis.
 \\
 Inclou una petita interfície d'usuari per sobre el llenç de dibuix, on es mostren els blocs que tenim disponibles per decorar el prefab. Tot i així, manca molt de feedback visual, ja que la majoria d'interaccions s'expressen a través de la consola mitjançant text, i les eines es seleccionen utilitzant draçeres de teclat.
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.25]{prefabEditor}
+  \caption{Captura de pantalla del editor de prefabs.}
+\end{figure}
 
 \subsection{UI}
 Per l'interfície d'usuari s'ha implementat un petit framework fet des de zero prou senzill, amb l'objectiu de permetre al usuari interactuar tant amb teclat i ratolí com amb controls o comandaments de consola.
@@ -46,16 +58,16 @@ La interfície d'usuari únicament disposa de dos components diferenciats.
 
 \subsubsection{gadget}
 %[[TODO-IMATGES]]
-Un gadget és una classe abstracte que representa un element qualsevol de la interfície d'usuari. Els gadgets s'encarreguen de gestionar la seva posició i tamany, la visibilitat, el nom, i mantenen enllaços als gadgets que tenen al voltant per poder-hi accedir-hi direccionalment.
+Un gadget és una classe abstracte que representa un element qualsevol de l'interfície d'usuari. Els gadgets s'encarreguen de gestionar la seva posició i tamany, la visibilitat, el nom, i mantenen enllaços als gadgets que tenen al voltant per poder-hi accedir direccionalment.
 Els gadgets que hi ha actualment al motor són:
 \begin{itemize}
   \item{panel: Gadget que representa un panell rectangular on es poden afegir altres gadgets.}
-  \item{pushButton: Gadget que representa un botó, amb el qual es poden prendre accions al ser premut.}
-  \item{textView: Gadget que representa una caixa de text fixe.}
+  \item{pushButton: Gadget que representa un polsador, amb el qual es poden prendre accions al ser premut.}
+  \item{textView: Gadget que representa una caixa de text fixa.}
   \item{textEntry: Gadget que representa una caixa d'entrada de text.}
   \item{toggleButton: Gadget que representa un interruptor.}
   \item{imageView: Gadget que permet mostrar una imatge en pantalla.}
-  \item{scrollablePanel: Gadget que especialitza un panell, i afegeix funcionalitat per un panell on existeix un "tamany intern" major al tamany del panell, amb el qual s'afegeix l'habilitat de desplaçar-nos per dins del panell.}
+  \item{scrollablePanel: Gadget que especialitza un panell, i afegeix funcionalitat per un panell on existeix un `tamany intern' major al tamany del panell, amb el qual s'afegeix l'habilitat de desplaçar-nos per dins del panell.}
   \item{basicPanel: Gadget que especialitza un panell, i afegeix un fons sòlid al panell original.}
   \item{basicScrollablePanel: Gadget que especialitza un scrollablePanel, i afegeix un fons sòlid al gadget original.}
   \item{basicTextEntry: Gadget que especialitza un textEntry, i afegeix un fons sòlid al gadget original.}
@@ -65,44 +77,76 @@ Els gadgets que hi ha actualment al motor són:
   \item{healthDisplay: Gadget que permet mostrar per pantalla la salut d'una entitat.}
   \item{starmap: Gadget que mostra un mapa galàctic al voltant d'un cos astronòmic. Permet visualitzar les òrbites previstes d'un cos i les seves propietats (nom, massa i diàmetre)}
 \end{itemize}
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=5]{botons}
+  \caption{Botons i interruptors de la interfície en estats actiu i inactiu.}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5]{starmap}
+  \caption{Captura d'un starmap mostrant l'òrbita de Mart.}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5]{healthDisplay}
+  \caption{Captura d'un healthDisplay amb quatre cors plens de cinc màxims.}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5]{fddDisplay}
+  \caption{Captura d'un fddDisplay representant un vector amb direcció +X +Y +Z.}
+\end{figure}
+
 \subsubsection{scene}
 L'escena és poc més que un contenidor de gadgets, s'encarregarà de mantenir un gadget com a seleccionat, i fer les crides recursives per dibuixar i interactuar amb els gadgets que la composen.
 
 \section{Simulació del joc}
-%[[TODO-CLASSDIAG]]
 En aquesta part es detalla el disseny de la part de gameplay i simulació del motor. A grans trets, podríem dir que la classe principal és State\_Playing, que serà l'encarregada de rebre entrada, simular, i mostrar per pantalla l'acció del joc.
+\begin{figure}[H]
+  \centering
+  \includegraphics[angle=90,origin=c,scale=0.32]{ms2}
+  \caption{Diagrama de classes de la part de simulació.}
+\end{figure}
+
 \subsection{Escena del joc State Playing}
 %[[TODO-CLASSDIAG]]
-State\_Playing és l'escena principal del joc, i és l'encarregada de gestionar els diferents sistemes de la simulació. Conté l'escena de la UI, el registre d'entitats i el node base de la simulació. A continuació es detallen les seves funcions més importants.
+State\_Playing és l'escena principal del joc, i és l'encarregada de gestionar els diferents sistemes de la simulació. Conté la `scene' de la UI, el registre d'entitats i el node base de la simulació. A continuació es detallen les seves funcionalitats més importants.
 \subsubsection{Renderitzat}
 Tot i que el nostre motor i simulació es realitzen en un espai tridimensional, el renderitzat es farà utilitzant sprites en 2D. 
 Per tal de donar un efecte de profunditat, el procés de renderitzat consistirà en dibuixar els nodes capa a capa, aplicant parallatge a cada capa segons la seva distància amb la càmera. 
-D'aquesta manera, les capes més profundes i llunyanes a la càmera es dibuixaran abans i amb un menor zoom, tal que al moure la càmera el moviment en píxels d'aquella capa sera menor i donara l'efecte de ser lluny.
+D'aquesta manera, les capes més profundes i llunyanes a la càmera es dibuixaran abans i amb un menor zoom, tal que al moure la càmera el moviment en píxels d'aquella capa serà menor i donarà l'efecte de ser més llunyana.
 \\
-Es podran renderitzar tres tipus d'elements, nodes, entitats visibles i requadres. Per gestionar les diferents profunditats es mantindrà una llista de capes a dibuixar, que seran posteriorment ordenades segons la seva profunditat. 
+Es podran renderitzar quatre tipus d'elements, nodes, entitats visibles, requadres i filtres de capa. Per gestionar les diferents profunditats es mantindrà una llista de capes a dibuixar, que seran posteriorment ordenades segons la seva profunditat. 
 Els nodes es renderitzaran iterant per les capes del terreny i afegint-les a la llista. Tot node de la simulació serà considerat per renderitzar, però només ho serà en cas d'estar a una distància de la càmera que permeti que aparegui per pantalla. 
 Seguidament s'afegiran a la llista totes les entitats dibuixables que es trobin en una alçada dibuixable per la càmera, i que estiguin a una distància raonable com per ser dibuixades.
-Finalment, s'afegirà un requadre al voltant del "interactable" més proper al jugador, en cas que n'hi hagi cap a l'abast.
+S'afegiran multiples capes rectangulars translúcides, que donaràn un efecte de boira a les capes més llunyanes.
+Finalment, s'afegirà un requadre al voltant del `interactable' més proper al jugador, en cas que n'hi hagi algun a l'abast.
 \\
 Tot seguit s'ordenaràn els elements a dibuixar afegits a la llista segons la seva profunditat respecte la càmera, en ordre de més llunyà a més proper.
-Finalment començarà el procés de renderitzat pròpiament dit. Entitats i requadre són simples de dibuixar, tant sols cal aplicar una transformació per convertir la seva posició relativa a la càmera en posició respecte l'orígen de la pantalla, i aplicar zoom segons la seva profunditat a l'hora de dibuixar.
+Finalment començarà el procés de renderitzat pròpiament dit. Les capes de filtre tant sols necessitaran dibuixar un rectangle del seu color que cobreixi tota la pantalla. Entitats i requadre són simples de dibuixar, tant sols cal aplicar una transformació per convertir la seva posició relativa a la càmera en posició respecte l'orígen de la pantalla, i aplicar zoom segons la seva profunditat a l'hora de dibuixar.
 \\
 El renderitzat de capes de terreny serà lleugerament més complex. El procés consisteix en dibuixar els blocs de la capa un a un, iterant per aquells que es trobin dins el camp de visió de la càmera, aplicant efectes d'ombres i oclusió ambiental en cas de ser necessari.
 Als blocs de les capes s'apliquen tres tècniques de pre/post-processat.
-A cada bloc se li és calculada la seva visibilitat, a partir de la qual es decidirà si dibuixar o no el bloc. Aquesta visibilitat és precalculada al carregar-se el chunk que la conté. Es considera un bloc com a visible si qualsevol dels nou blocs situats en un quadrat de 3x3 centrat en el bloc de sobre el bloc actual és visible.
+A cada bloc se li és calculada la seva visibilitat, a partir de la qual es decidirà si dibuixar o no el bloc. Aquesta visibilitat és precalculada al carregar el chunk que la conté. Es considera un bloc com a visible si qualsevol dels nou blocs situats en un quadrat de 3x3 centrat en el bloc de sobre del bloc actual és visible.
 També es precalcula un efecte de oclusió ambiental, amb el que s'apliquen diferents ombres als blocs en funció dels blocs que té situats a sobre.
 Finalment, a cada capa es calcula un ombrejat general segons la seva profunditat, donant tons més foscos a les capes més profundes i ajudant al jugador a entendre la profunditat de les capes.
 
 \subsubsection{Entrada}
-Per processar l'entrada simplement es passen les tecles i interaccions rebudes cap a l'escena de la UI, i s'envien també cap al component "brain" del jugador en cas que en tingui.
-\subsubsection{Simulació}
-En la fase de simulació s'executen els sistemes del sistema entitat component, s'actualitzen els propulsors dels nodes, es netejen i s'adormen/desperten les entitats que escaiguin, i finalment es fan els càlculs de física i s'actualitza la càmera per evitar co\lgem isions.
+Per processar l'entrada simplement es passen les tecles i interaccions rebudes cap a l'escena de la UI, i s'envien també cap al component `brain' del jugador en cas que en tingui.
+\subsubsection{Actualització}
+En la fase d'actualització s'executen els sistemes del sistema entitat component, s'actualitzen els propulsors dels nodes, es netejen i s'adormen/desperten les entitats que escaiguin, i finalment es fan els càlculs de física i s'actualitza la càmera per evitar co\lgem isions.
 \subsection{universeNode}
 %[[TODO-CLASSDIAG]]
 La classe universeNode servirà per representar els cossos astronòmics en la simulació (els anomenats nodes). Els nodes tenen una estructura jeràrquica, on cada node conté els seus nodes fills, que són els nodes que l'estan orbitant.
-Els nodes contenen el terreny del joc, que està compost per multiples agrupacions de blocs anomenades chunks. 
-Cada node conté una matriu 3D de chunks, on els chunks seràn carregats en temps real mitjançant un fil para\lgem el d'execució.
-Els nodes mantenen informació sobre la seva massa, diàmetre, el node pare, la seva posició i velocitat respecte al seu pare, el seu sistema de propulsió, el seu generador i la llista de "interactables" que contenen.
+Els nodes contenen el terreny del joc, que està compost per múltiples agrupacions de blocs anomenades chunks. 
+Cada node conté una matriu 3D de chunks, on aquests seran carregats en temps real mitjançant un fil para\lgem el d'execució.
+Els nodes mantenen informació sobre la seva massa, diàmetre, el node pare, la seva posició i velocitat respecte al seu pare, el seu sistema de propulsió, el seu generador i la llista de `interactables' que contenen.
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.15]{hier}
+  \caption{Exemple de jerarquía de universeNodes. Sagitari A* és el node arrel, i cada node conté els seus nodes inferiors. La Terra conté la Lluna i la nau grossa (Roc), i dins la nau grossa tenim la petita (Sparrow).}
+\end{figure}
 \subsubsection{Reparentització}
 Per tal de recalcular la jerarquía dels nodes, els nodes tenen un mètode que els permet calcular el millor pare donada una posició i un pare actual. Aquest càlcul es fa mitjançant esferes d'influència, que són un concepte utilitzat en astrodinàmica per calcular el principal cos al que un cos astronòmic orbita. A part de les esferes d'influència, tenen prioritat els nodes en els quals la posició donada correspongui a un bloc no buit.
 \subsubsection{chunkLoader}
@@ -114,7 +158,7 @@ El funcionament a alt nivell és el següent:
   \item En cas que la posició del jugador no hagi canviat de chunk, el chunkLoader adorm el fil durant un temps.
   \item En cas que que sí, els chunks més llunyans al jugador seràn carregats, en cas de ser a disc es carregaran des de disc, en cas contrari seran generats pel nodeGenerator.
 \end{enumerate}
-Per determinar on posicionar un chunk dins la matriu de chunks s'obté la posició del chunk en el món, es divideix cada eix entre el tamany dels chunks, i finalment s'obté la posició dins de la matriu aplicant el mòdul del tamany dels costats de la matriu 3D.
+Per determinar on posicionar un chunk dins la matriu de chunks s'obté la posició del chunk en el món, es divideix cada eix entre el tamany del costat dels chunks, i finalment s'obté la posició dins de la matriu aplicant el mòdul del tamany dels costats de la matriu 3D.
 D'aquesta manera s'aconsegueix un efecte similar a un buffer circular en tres dimensions.
 
 \subsection{terrainChunk}
@@ -123,8 +167,13 @@ Els terrainChunks són agrupacions cúbiques de blocs. Actualment són cubs de v
 Els blocs, més concretament metaBlocks, es guarden en un vector i s'accedeix als blocs com si estiguessin en una matriu tridimensional.
 Els chunks poden ser serialitzats i deserialitzats cap a disc, i es poden crear utilitzant el nodeGenerator del node que els contingui.
 \subsection{Blocs}
-%[[TODO-IMATGE]]
 Els blocs seràn el material amb el que el terreny del joc estarà construït. Representen un bloc de un metre cúbic. Dins del motor es fan servir dues classes per representar els blocs.
+\begin{figure}[H]
+\centering
+\includegraphics[scale=3]{blocs}
+\caption{Blocs de terra, gespa aigua i sorra.}
+\end{figure}
+
 \subsubsection{baseBlock}
 El struct baseBlock representa un bloc imaginari amb unes certes propietats. Les propietats inclouen nom, ID, visibilitat, si és sòlid, opacitat, massa, colisionador i sprite.
 
@@ -205,7 +254,11 @@ Tot i qué té gran utilitat per crear estructures estàtiques, no és capaç de
 \subsubsection{terrainPainterGenerator}
 TerrainPainterGenerator és el principal generador per a terreny del motor. Genera cossos astronòmics a escala real però de forma cilíndrica.
 Funciona a partir de fer un mostreig al gradient de soroll a partir de la posició 2D del bloc a calcular. Un cop es té el nivell de soroll en aquell punt, s'utilitza una llista de seccions de terreny a les quals el soroll està mapejat, per tal d'obtenir el bloc que tocarà a aquella alçada tinguent en compte el soroll de la posició 2D.
-%[[TODO-FIGURA]]
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=1.5]{mappingGradient}
+  \caption{Representació del mapeig entre soroll i terreny al planeta Gaia.}
+\end{figure}
 
 \subsection{physicsEngine}
 PhysicsEngine és la classe que representa el motor de física, i és la encarregada de fer tots els càlculs de física del motor. És filla de la classe rp3d::CollisionCallback degut a necessitats per utilitzar la llibreria de física. 
